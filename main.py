@@ -13,8 +13,11 @@ def _map(x, in_min, in_max, out_min, out_max):
     return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 
-def map_movement(x):
+def map_x_movement(x):
     return int((x - 95) * (255 - 0) / (375 - 95) + 0)
+
+def map_y_movement(y):
+    return int((y - 66) * (255 - 0) / (346 - 66) + 0)
 
 
 class Player(object):
@@ -49,11 +52,11 @@ class Player(object):
         return x, y
 
     def processed_data(self):
-        x1 = map_movement(self.x_start + player.get_position()[0])
-        x2 = map_movement(self.x_start + player.get_position()[0])
+        x1 = map_x_movement(self.x_start + player.get_position()[0])
+        x2 = map_x_movement(self.x_start + player.get_position()[0])
 
-        y1 = map_movement(self.y_start - player.get_position()[1])
-        y2 = map_movement(self.y_start - player.get_position()[1])
+        y1 = map_y_movement(self.y_start + player.get_position()[1])
+        y2 = map_y_movement(self.y_start + player.get_position()[1])
         return x1, y1, x2, y2
 
     def send_over_DMX(self, x1, y1, x2, y2, dimmer):
