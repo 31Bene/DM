@@ -16,6 +16,7 @@ def _map(x, in_min, in_max, out_min, out_max):
 def map_x_movement(x):
     return int((x - 95) * (255 - 0) / (375 - 95) + 0)
 
+
 def map_y_movement(y):
     return int((y - 66) * (255 - 0) / (346 - 66) + 0)
 
@@ -41,7 +42,6 @@ class Player(object):
 
     def change_color(self, color):
         self.color = color
-
 
     def draw(self, game_screen):
         pygame.draw.rect(game_screen, self.color, self.player)
@@ -70,7 +70,6 @@ class Player(object):
         k8062.set_data(141, 255)
 
 
-
 pygame.init()
 
 player = Player()
@@ -81,7 +80,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.JOYBUTTONDOWN:
+        if event.type == pygame.JOYAXISMOTION:
             #print(event)
             pass
 
@@ -107,8 +106,11 @@ while run:
     elif pygame.joystick.Joystick(0).get_button(3):
         player.change_color("orange")
 
+    print(pygame.joystick.Joystick(0).get_axis(3))
+    dimmer = 0
 
-    player.send_over_DMX(player.processed_data()[0], player.processed_data()[1], player.processed_data()[2], player.processed_data()[3], dimmer=0)
+    player.send_over_DMX(player.processed_data()[0], player.processed_data()[1],
+                         player.processed_data()[2], player.processed_data()[3], dimmer)
 
     screen.fill((0, 0, 0))
     player.draw(screen)
