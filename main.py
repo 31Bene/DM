@@ -89,6 +89,7 @@ while run:
         x_speed = 0
 
     y_speed = round(pygame.joystick.Joystick(0).get_axis(1))
+    s = 0
     if not pygame.joystick.Joystick(0).get_axis(5) == 0 and not pygame.joystick.Joystick(0).get_axis(4):
         x_speed = round(pygame.joystick.Joystick(0).get_axis(0))
 
