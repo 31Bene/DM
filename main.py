@@ -39,6 +39,7 @@ class Player(object):
     def change_color(self, color):
         self.color = color
 
+
     def draw(self, game_screen):
         pygame.draw.rect(game_screen, self.color, self.player)
 
@@ -56,7 +57,6 @@ class Player(object):
         return x1, y1, x2, y2
 
     def send_over_DMX(self, x1, y1, x2, y2, dimmer):
-        print(x1, y1, x2, y2)
         k8062.set_data(115, y1)
         k8062.set_data(116, x1)
         k8062.set_data(129, y2)
@@ -65,6 +65,7 @@ class Player(object):
         k8062.set_data(142, dimmer)
         k8062.set_data(127, 255)
         k8062.set_data(141, 255)
+
 
 
 pygame.init()
@@ -77,8 +78,8 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.JOYAXISMOTION:
-            # print(pygame.joystick.Joystick(0).get_axis(0))
+        if event.type == pygame.JOYBUTTONDOWN:
+            #print(event)
             pass
 
     if pygame.joystick.Joystick(0).get_axis(4) >= 0:
@@ -88,13 +89,23 @@ while run:
     else:
         x_speed = 0
 
-    y_speed = round(pygame.joystick.Joystick(0).get_axis(1))
-    if not pygame.joystick.Joystick(0).get_axis(5) == 0 and not pygame.joystick.Joystick(0).get_axis(4):
-        x_speed = round(pygame.joystick.Joystick(0).get_axis(0))
+    y_speed = round(pygame.joystick.Joystick(0).get_axis(3))
+    if pygame.joystick.Joystick(0).get_axis(5) == -1.0 and pygame.joystick.Joystick(0).get_axis(4) == -1.0:
+        x_speed = round(pygame.joystick.Joystick(0).get_axis(2))
 
     player.move(x_speed, y_speed)
 
-    #player.send_over_DMX(player.processed_data()[0], player.processed_data()[1], player.processed_data()[2], player.processed_data()[3], dimmer=0)
+    if pygame.joystick.Joystick(0).get_button(0):
+        player.change_color("green")
+    elif pygame.joystick.Joystick(0).get_button(1):
+        player.change_color("red")
+    elif pygame.joystick.Joystick(0).get_button(2):
+        player.change_color("blue")
+    elif pygame.joystick.Joystick(0).get_button(3):
+        player.change_color("orange")
+
+
+    player.send_over_DMX(player.processed_data()[0], player.processed_data()[1], player.processed_data()[2], player.processed_data()[3], dimmer=0)
 
     screen.fill((0, 0, 0))
     player.draw(screen)
